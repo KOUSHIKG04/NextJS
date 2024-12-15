@@ -6,14 +6,14 @@ import bcrypt from "bcryptjs";
 export const sendEmail = async ({ email, emailType, userID }: any) => {
     try {
 
-        const hashedVAlue =
+        const hashedValue =
             await bcrypt.hash(userID.toString(), 10)
 
         if (emailType === "VERIFY") {
             await User.findByIdAndUpdate(
                 userID,
                 {
-                    verifyToken: hashedVAlue,
+                    verifyToken: hashedValue,
                     verifyTokenExpiry: Date.now() + 3600000
                 }
             )
@@ -21,7 +21,7 @@ export const sendEmail = async ({ email, emailType, userID }: any) => {
             await User.findByIdAndUpdate(
                 userID,
                 {
-                    forgotPasswordToken: hashedVAlue,
+                    forgotPasswordToken: hashedValue,
                     forgotPasswordTokenExpiry: Date.now() + 3600000
                 })
         }
@@ -38,7 +38,8 @@ export const sendEmail = async ({ email, emailType, userID }: any) => {
 
 
         const domain = process.env.DOMAIN || "http://localhost:3000";
-        
+        const link = `${domain}/${emailType === "VERIFY" ? "verifyemail" : "resetpassword"}?token=${hashedValue}`;
+
         const mailOptions = {
             from: 'koushikgdatta5@gmail.com',
             to: email,
@@ -46,14 +47,12 @@ export const sendEmail = async ({ email, emailType, userID }: any) => {
             html: `
         <p>
             Click 
-            <a href="${domain}/verifyemail?token=${hashedVAlue}">
-            here</a> to ${emailType === "VERIFY" ? "verify your email" : "reset your password"} 
-            or copy and paste the link below in your browser.
-            <br> ${domain}/verifyemail?token=${hashedVAlue}
+            <a href="${link}"> here </a> 
+            to ${ emailType === "VERIFY" ? "verify your email" : "reset your password" }  
+            or copy and paste the link below in your browser.<br><Strong>${link}</Strong>
         </p>
-    `,
+    `
         };
-
 
         const mailresponse = await transport.sendMail(mailOptions); return mailresponse;
 

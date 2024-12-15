@@ -6,10 +6,10 @@ export function middleware(req: NextRequest) {
 
     const path = req.nextUrl.pathname;
 
-    const isPublicPath = 
-    path === '/login' || path === '/signup'
+    const isPublicPath =
+        path === '/login' || path === '/signup' || path === '/verifyemail';
 
-    const token = req.cookies.get('token')?.value || '' 
+    const token = req.cookies.get('token')?.value || ''
 
     if (isPublicPath && token) {
         return NextResponse.redirect(
@@ -31,5 +31,6 @@ export const config = {
         '/profile',
         '/login',
         '/signup',
+        '/verifyemail',
     ],
 }

@@ -116,6 +116,18 @@ export default function LoginPage() {
             SIGNUP HERE
           </Link>
         </p>
+
+        <div>
+          <p className="text-gray-600 text-center mt-6">
+          <Link
+            href="/forgetpassword"
+            className="font-semibold underline text-sm"
+          >
+            FORGOT PASSWORD CLICK HERE!
+          </Link>
+        </p>
+        </div>
+        
       </div>
     </div>
   );
