@@ -1,27 +1,22 @@
-'use client';
-import { GetServerSideProps } from "next";
+// src/app/profile/[id]/page.tsx
+import { FC } from "react";
 
 interface UserProfileProps {
-  id: string;
+  params: {
+    id: string;
+  };
 }
 
-const UserProfile = ({ id }: UserProfileProps) => {
+const UserProfile: FC<UserProfileProps> = ({ params }) => {
   return (
     <div className="flex flex-col items-center justify-center min-h-screen py-2">
       <hr />
       <p className="text-2xl font-normal">
-        YOUR PROFILE ID =<span className="p-2 text-black font-bold">{id}</span>
+        YOUR PROFILE ID =
+        <span className="p-2 text-black font-bold">{params.id}</span>
       </p>
     </div>
   );
-};
-
-export const getServerSideProps: GetServerSideProps = async (context) => {
-  const { id } = context.params!; // Ensure 'id' is safely accessed
-
-  return {
-    props: { id },
-  };
 };
 
 export default UserProfile;
