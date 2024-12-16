@@ -1,8 +1,6 @@
 import { connectDB } from "@/db/dbconfig";
-import User from "@/model/userModel";
 import { NextResponse, NextRequest } from "next/server";
-import jwt from "jsonwebtoken";
-import { log } from "node:console";
+
 
 
 connectDB();
@@ -22,10 +20,16 @@ export async function GET(req: NextRequest) {
 
         return response
 
-    } catch (error: any) {
+    } catch (error: unknown) {
+        if (error instanceof Error) {
+            return NextResponse.json(
+                { error: error.message }, 
+                { status: 500 }
+            );
+        }
         return NextResponse.json(
-            { error: error.message },
+            { error: "Unknown error occurred" }, 
             { status: 500 }
-        )
+        );
     }
 }

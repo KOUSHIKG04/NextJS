@@ -3,7 +3,11 @@ import User from "@/model/userModel";
 import bcrypt from "bcryptjs";
 
 
-export const sendEmail = async ({ email, emailType, userID }: any) => {
+export const sendEmail = async ({ email, emailType, userID }: {
+    email: string;
+    emailType: "VERIFY" | "RESET";
+    userID: string;
+}) => {
     try {
 
         const hashedValue =
@@ -27,12 +31,12 @@ export const sendEmail = async ({ email, emailType, userID }: any) => {
         }
 
 
-        var transport = nodemailer.createTransport({
+        const transport = nodemailer.createTransport({
             host: "sandbox.smtp.mailtrap.io",
             port: 2525,
             auth: {
-                user: process.env.NODEMAILER_USER,
-                pass: process.env.NODEMAILER_PASS
+                user: process.env.NODEMAILER_USER!,
+                pass: process.env.NODEMAILER_PASS!
             }
         });
 

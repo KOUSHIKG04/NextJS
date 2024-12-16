@@ -11,7 +11,12 @@ export default function ForgetEmail() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
 
-  const handleSubmit = async (e: { preventDefault: () => void; }) => {
+  interface ResponseData {
+    message: string;
+  }
+
+  const handleSubmit = async (
+    e: React.FormEvent) => {
     e.preventDefault();
 
     setMessage("");
@@ -19,16 +24,20 @@ export default function ForgetEmail() {
     setError("");
 
     try {
-      const res = await axios.post(
-        "/api/users/forgotpassword", 
-        { email }
-    );
-      setMessage(res.data.message);
+      const res = await axios.post<ResponseData>(
+        "/api/users/forgotpassword", {
+        email,
+      });
 
-    } catch (error: any) {
-      setError(
-        error.res?.data?.error || "Something went wrong"
-    );
+      setMessage(res.data.message);
+    } catch (error: unknown) {
+      if (axios.isAxiosError(error)) {
+        setError(
+          error.response?.data?.error || "Something went wrong"
+        );
+      } else {
+        setError("Unknown error occurred");
+      }
     } finally {
       setLoading(false);
     }
