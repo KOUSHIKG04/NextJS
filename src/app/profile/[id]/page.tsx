@@ -1,11 +1,16 @@
+import { useRouter } from "next/router";
 
-const UserProfile = ({ params }: { params: { id: string } }) => {
+const UserProfile = () => {
+  const { query } = useRouter();
+  const { id } = query;
+
+  if (!id) return <div>Loading...</div>;
+
   return (
     <div className="flex flex-col items-center justify-center min-h-screen py-2">
       <hr />
       <p className="text-2xl font-normal">
-        YOUR PROFILE ID =
-        <span className="p-2 text-black font-bold">{params.id}</span>
+        YOUR PROFILE ID =<span className="p-2 text-black font-bold">{id}</span>
       </p>
     </div>
   );
