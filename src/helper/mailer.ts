@@ -63,8 +63,13 @@ export const sendEmail = async ({ email, emailType, userID }:
 
         const mailresponse = await transport.sendMail(mailOptions); return mailresponse;
 
-    } catch (error: any) {
-        throw new Error(error.message);
+    } catch (error) {
+        if (error instanceof Error) {
+            console.log(error.message);
+        } else {
+            console.log("An unexpected error occurred:", error);
+        }
+    
     }
 }
 

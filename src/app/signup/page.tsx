@@ -23,21 +23,24 @@ export default function SignupPage() {
   const onSignup = async () => {
     try {
       setLoading(true);
-      const res = 
-      await axios.post("/api/users/signup", user);
+      const res = await axios.post("/api/users/signup", user);
 
       console.log("Signup success!", res.data);
       toast.success("Signup successful!");
-      
+
       router.push("/login");
-    } catch (error: any) {
-      console.log(
-        "Signup failed",
-        error.response?.data?.error || error.message
-      );
-      toast.error(
-        error.response?.data?.error || "An unexpected error occurred"
-      );
+    } catch (error: unknown) {
+      if (error instanceof Error) {
+        console.error(error.message);
+      } else if (
+        axios.isAxiosError(error)
+      ) {
+        toast.error(
+          error.response?.data?.error || "An unexpected error occurred"
+        );
+      } else {
+        console.error("An unknown error occurred");
+      }
     } finally {
       setLoading(false);
     }

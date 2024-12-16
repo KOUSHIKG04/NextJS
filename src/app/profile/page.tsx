@@ -7,6 +7,7 @@ import axios from "axios";
 import { useRouter } from "next/navigation";
 import toast from "react-hot-toast";
 
+
 export default function ProfilePage() {
   
   const [data, setData] = useState();
@@ -18,15 +19,19 @@ export default function ProfilePage() {
       console.log("Logged out success!", res.data);
       toast.success("Logged out successfully!");
       router.push("/login");
-    } catch (error: any) {
-      console.log(
-        "Logout failed",
-        error.response?.data?.error || error.message
-      );
-      toast.error(
-        error.response?.data?.error || "An unexpected error occurred"
-      );
-    }
+    } catch (error: unknown) {
+      if (error instanceof Error) {
+        console.error(error.message);
+      } else if (
+        axios.isAxiosError(error)
+      ) {
+        toast.error(
+          error.response?.data?.error || "An unexpected error occurred"
+        );
+      } else {
+        console.error("An unknown error occurred");
+      }
+    } 
   };
 
   const getUserDetails = async () => {

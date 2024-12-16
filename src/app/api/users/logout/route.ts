@@ -1,9 +1,9 @@
 import { connectDB } from "@/db/dbconfig";
-import { NextResponse, NextRequest } from "next/server";
+import { NextResponse } from "next/server";
 
 connectDB();
 
-export async function GET(req: NextRequest) {
+export async function GET() {
 
     try {
         const response = NextResponse.json({

@@ -28,14 +28,18 @@ export default function LoginPage() {
       console.log("Login success!", res.data);
       toast.success("Login successful!");
       router.push("/profile");
-    } catch (error: any) {
-      console.log(
-        "Login failed", 
-        error.response?.data?.error || error.message
-      );
-      toast.error(
-        error.response?.data?.error || "An unexpected error occurred"
-      );
+    } catch (error: unknown) {
+      if (error instanceof Error) {
+        console.error(error.message);
+      } else if (
+        axios.isAxiosError(error)
+      ) {
+        toast.error(
+          error.response?.data?.error || "An unexpected error occurred"
+        );
+      } else {
+        console.error("An unknown error occurred");
+      }
     } finally {
       setLoading(false);
     }
@@ -103,11 +107,10 @@ export default function LoginPage() {
           className="w-full text-white p-2 rounded-lg  transition-colors"
         >
           {buttonDisabled ? "PLEASE FILL ALL FIELDS " : "LOGIN"}
-       
         </Button>
 
         <p className="text-gray-600 text-center mt-4">
-          Dont' have an account ?{" "}
+          Dont&apos;s have an account ?{" "}
           <Link
             href="/signup"
             className="text-blue-500 hover:underline font-medium text-sm"
@@ -118,15 +121,14 @@ export default function LoginPage() {
 
         <div>
           <p className="text-gray-600 text-center mt-6">
-          <Link
-            href="/forgetpassword"
-            className="font-semibold underline text-sm"
-          >
-            FORGOT PASSWORD CLICK HERE!
-          </Link>
-        </p>
+            <Link
+              href="/forgetpassword"
+              className="font-semibold underline text-sm"
+            >
+              FORGOT PASSWORD CLICK HERE!
+            </Link>
+          </p>
         </div>
-        
       </div>
     </div>
   );
