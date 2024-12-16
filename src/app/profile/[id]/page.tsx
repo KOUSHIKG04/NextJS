@@ -1,13 +1,5 @@
 
-interface UserProfileProps {
-  params: {
-    id: string;
-  };
-}
-
-
-const UserProfile = ({ params } : UserProfileProps) => {
-
+const UserProfile = ({ params }: { params: { id: string } }) => {
   return (
     <div className="flex flex-col items-center justify-center min-h-screen py-2">
       <hr />
