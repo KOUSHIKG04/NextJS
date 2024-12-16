@@ -1,8 +1,8 @@
-import { useRouter } from "next/router";
+import { useRouter, useParams } from "next/navigation";
 
 const UserProfile = () => {
-  const { query } = useRouter();
-  const { id } = query;
+  const router = useRouter();
+  const { id } = useParams();
 
   if (!id) return <div>Loading...</div>;
 
