@@ -22,9 +22,16 @@ export async function GET(req: NextRequest) {
             messaage: "User found", data: user
         })
 
-    } catch (error: any) {
+    } catch (error: unknown) {
+        if (error instanceof Error) {
+            return NextResponse.json(
+                { error: error.message },
+                { status: 500 }
+            );
+        }
         return NextResponse.json(
-            { error: error.message }, { status: 400 }
+            { error: "Unknown error occurred" },
+            { status: 500 }
         );
     }
 }

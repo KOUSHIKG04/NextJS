@@ -2,7 +2,7 @@
 import axios from "axios";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useCallback } from "react";
 
 export default function VerifyEmailPage() {
 
@@ -10,7 +10,7 @@ export default function VerifyEmailPage() {
   const [verified, setVerified] = useState(false);
   const [token, setToken] = useState("");
 
-  const verifyUserEmail = async () => {
+  const verifyUserEmail = useCallback(async () => {
 
     try {
       await axios.post(
@@ -22,7 +22,7 @@ export default function VerifyEmailPage() {
       setError(true);
       console.log(error.reponse.data);
     }
-  };
+  },[token]);
 
   useEffect(() => {
     const urlToken = 

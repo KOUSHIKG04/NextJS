@@ -2,12 +2,15 @@ import nodemailer from "nodemailer";
 import User from "@/model/userModel";
 import bcrypt from "bcryptjs";
 
-
-export const sendEmail = async ({ email, emailType, userID }: {
+interface SendEmailParams {
     email: string;
     emailType: "VERIFY" | "RESET";
     userID: string;
-}) => {
+}
+
+export const sendEmail = async ({ email, emailType, userID }: 
+    SendEmailParams
+) => {
     try {
 
         const hashedValue =

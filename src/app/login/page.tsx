@@ -9,6 +9,7 @@ import { Input } from "@/components/ui/input";
 import toast from "react-hot-toast";
 
 export default function LoginPage() {
+  
   const router = useRouter();
   const [user, setUser] = useState({
     email: "",
@@ -19,8 +20,6 @@ export default function LoginPage() {
   const [loading, setLoading] = useState(false);
 
    
-
-
   const onLogin = async () => {
     
     try {

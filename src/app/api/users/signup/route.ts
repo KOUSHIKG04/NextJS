@@ -6,9 +6,15 @@ import { sendEmail } from "@/helper/mailer";
 
 connectDB();
 
+interface SignupRequestBody {
+    username: string;
+    email: string;
+    password: string;
+}
+
 export async function POST(req: NextRequest) {
     try {
-        const reqBody = await req.json();
+        const reqBody: SignupRequestBody = await req.json();
         const { username, email, password } = reqBody;
 
         const user = await User.findOne({ email })
@@ -42,10 +48,16 @@ export async function POST(req: NextRequest) {
         }, { status: 200 })
 
 
-    } catch (error: any) {
+    } catch (error: unknown) {
+        if (error instanceof Error) {
+            return NextResponse.json(
+                { error: error.message },
+                { status: 500 }
+            );
+        }
         return NextResponse.json(
-            { error: error.message },
+            { error: "Unknown error occurred" },
             { status: 500 }
-        )
+        );
     }
 }

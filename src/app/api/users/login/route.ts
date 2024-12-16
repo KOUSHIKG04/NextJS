@@ -10,7 +10,7 @@ connectDB();
 
 export async function POST(req: NextRequest) {
 
-    const secret = process.env.TOKEN_SECRET;
+    const secret = process.env.TOKEN_SECRET || "defaultSecret";
     if (!secret) {
         return NextResponse.json(
             { error: "Internal server error: TOKEN_SECRET is missing" },
@@ -63,10 +63,16 @@ export async function POST(req: NextRequest) {
         return response;
 
 
-    } catch (error: any) {
+    } catch (error: unknown) {
+        if (error instanceof Error) {
+            return NextResponse.json(
+                { error: error.message },
+                { status: 500 }
+            );
+        }
         return NextResponse.json(
-            { error: error.message },
+            { error: "Unknown error occurred" },
             { status: 500 }
-        )
+        );
     }
 }
