@@ -1,11 +1,11 @@
-import { useRouter, useParams } from "next/navigation";
+'use client';
+import { GetServerSideProps } from "next";
 
-const UserProfile = () => {
-  const router = useRouter();
-  const { id } = useParams();
+interface UserProfileProps {
+  id: string;
+}
 
-  if (!id) return <div>Loading...</div>;
-
+const UserProfile = ({ id }: UserProfileProps) => {
   return (
     <div className="flex flex-col items-center justify-center min-h-screen py-2">
       <hr />
@@ -14,6 +14,14 @@ const UserProfile = () => {
       </p>
     </div>
   );
+};
+
+export const getServerSideProps: GetServerSideProps = async (context) => {
+  const { id } = context.params!; // Ensure 'id' is safely accessed
+
+  return {
+    props: { id },
+  };
 };
 
 export default UserProfile;
